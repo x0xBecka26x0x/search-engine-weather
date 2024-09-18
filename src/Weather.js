@@ -1,18 +1,19 @@
 import React, { useState } from "react";
+import FormattedDate from "./FormattedDate";
 import axios from "axios";
 import "./Weather.css";
 
 
 export default function Weather(props) {
-    const [weatherDetails, setWeatherDetails] = useState({ ready: false});
-    const [city, setCity] = useState();
+    const [weatherDetails, setWeatherDetails] = useState({ ready: false });
+    const [city, setCity] = useState(props.defaultCity);
 
     function handleResponse(response) {
         setWeatherDetails({
             ready: true,
-            temperature: response.data.main.temp,
+            npmtemperature: response.data.main.temp,
             humidity: response.data.main.humidity,
-            date: "Wednesday 07:00",
+            date: new Date(response.data.dt * 1000),
             description: response.data.weather[0].description,
             iconUrl: "https://ss1.gstatic.com/onebox/weather/64/partly_cloudy.png",
             wind: response.data.wind.speed,
@@ -20,16 +21,32 @@ export default function Weather(props) {
         });
     }
 
+    function handleSubmit(event) {
+        event.preventDefault();
+        searchButton();
+    }
+
+    function handleSearchBox(event){
+        setCity(event.target.value);
+    }
+
+    function searchButton() {
+        const apiKey = "bf8f1010b3c486eaa378at4e5eo24f84";
+        let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+        axios.get(apiUrl).then(handleResponse);
+    }
+
   if (weatherDetails.ready) {
     return (
       <div className="Weather">
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="row">
                 <div className="col-9">
                     <input
                         type="search"
                         placeholder="Enter a city..."
                         className="control"
+                        onChange={handleSearchBox}
                     />
                 </div>
                 <div className="col-3">
@@ -39,7 +56,9 @@ export default function Weather(props) {
         </form>
         <h1>{weatherDetails.city}</h1>
         <ul>
-            <li>{weatherDetails.date}</li>
+            <li>
+                <FormattedDate date={weatherDetails.date} />
+            </li>
             <li className="text-capitalize">{weatherDetails.description}</li>
         </ul>
         <div className="row mt-3">
@@ -64,11 +83,5 @@ export default function Weather(props) {
             </div>
         </div>
     );
-} else {
-    const apiKey = "bf8f1010b3c486eaa378at4e5eo24f84";
-    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${props.defaultCity}&key=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(handleResponse);
-
-    return "Loading...";
 }
 }
