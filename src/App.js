@@ -16,7 +16,12 @@ export default function App() {
           <a 
               href="https://github.com/x0xBecka26x0x/search-engine-weather"
               target="_blank" rel="noreferrer"
-          >Github</a>! 
+          >Github</a>{" "} and {" "} 
+          hosted on {" "}
+          <a
+              href="https://app.netlify.com/teams/x0xbecka26x0x-qzlecfy/sites" 
+              target="_blank" rel="noreferrer"
+              >Netlify</a>! {" "}✌🏼
         </footer>
       </div>
     );
