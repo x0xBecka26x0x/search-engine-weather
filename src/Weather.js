@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import FormattedDate from "./FormattedDate";
+import WeatherInfo from "./WeatherInfo";
+import "./WeatherTemperature";
 import axios from "axios";
 import "./Weather.css";
 
@@ -11,15 +12,16 @@ export default function Weather(props) {
     function handleResponse(response) {
         setWeatherDetails({
             ready: true,
-            npmtemperature: response.data.main.temp,
-            humidity: response.data.main.humidity,
+            temperature: response.data.temperature.current,
+            humidity: response.data.temperature.humidity,
             date: new Date(response.data.dt * 1000),
-            description: response.data.weather[0].description,
-            iconUrl: "https://ss1.gstatic.com/onebox/weather/64/partly_cloudy.png",
+            description: response.data.condition.description,
+            icon: response.data.condition.icon,
             wind: response.data.wind.speed,
-            city: response.data.name
+            city: response.data.city
         });
     }
+
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -36,52 +38,31 @@ export default function Weather(props) {
         axios.get(apiUrl).then(handleResponse);
     }
 
-  if (weatherDetails.ready) {
-    return (
-      <div className="Weather">
-        <form onSubmit={handleSubmit}>
-            <div className="row">
-                <div className="col-9">
-                    <input
-                        type="search"
-                        placeholder="Enter a city..."
-                        className="control"
-                        onChange={handleSearchBox}
-                    />
-                </div>
-                <div className="col-3">
-                    <input type="submit" value="Search" className="btn btn-primary" />
-                </div>
+    if (weatherDetails.ready) {
+        return (
+            <div className="Weather">
+                <form onSubmit={handleSubmit}>
+                    <div className="row">
+                        <div className="col-6">
+                            <input
+                                type="search"
+                                placeholder="Enter a city..."
+                                className="control"
+                                onChange={handleSearchBox}
+                            />
+                            <input
+                                type="submit" 
+                                value="Search" 
+                                className="btn"
+                            />
+                        </div>
+                    </div>
+                </form>
+                <WeatherInfo data={weatherDetails}/>
             </div>
-        </form>
-        <h1>{weatherDetails.city}</h1>
-        <ul>
-            <li>
-                <FormattedDate date={weatherDetails.date} />
-            </li>
-            <li className="text-capitalize">{weatherDetails.description}</li>
-        </ul>
-        <div className="row mt-3">
-            <div className="col-6">
-              <img
-                    src="{weatherDetails.iconUrl}" 
-                    alt="{weatherDetails.description}"
-              />
-              <div className="float-left">
-                <span className="temperature">
-                    {Math.round(weatherDetails.temperature)}
-                </span>
-              <span className="unit">°C</span>
-              </div>
-            </div>
-            </div>
-            <div className="col-6">
-                <ul>
-                    <li>Humidity: {weatherDetails.humidity}%</li>
-                    <li>Wind: {weatherDetails.wind}  km/h%</li>
-                </ul>
-            </div>
-        </div>
     );
+} else {
+    searchButton();
+    return "Loading...";
 }
 }
