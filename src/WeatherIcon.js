@@ -25,7 +25,7 @@ export default function WeatherIcon(props) {
 
     return (
         <div>
-            icon_url={code[props.code]}
+            {code[props.code]}
         </div>
 
     )
