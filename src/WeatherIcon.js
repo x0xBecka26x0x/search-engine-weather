@@ -2,7 +2,7 @@ import React from "react";
 import "./WeatherInfo";
 
 export default function WeatherIcon(props) {
-    let icon_url = {
+    let code = {
         "Clear Sky Day": <img src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/clear-sky-day.png" alt="Clear Sky Day" />,
         "Clear Sky Night": <img src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/clear-sky-night.png" alt="Clear Sky Night" />,
         "Few Clouds Day": <img src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/few-clouds-day.png"  alt="Few Clouds Day"/>,
@@ -24,6 +24,9 @@ export default function WeatherIcon(props) {
     };
 
     return (
-        icon_url=[props.data.icon]
-    );
+        <div>
+            icon_url={code[props.code]}
+        </div>
+
+    )
 }
