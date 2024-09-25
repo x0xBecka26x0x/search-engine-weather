@@ -49,10 +49,19 @@
   }
 
   .Weather .temperature {
-    font-size: 60px;
+    font-size: 75px;
+    font-weight: bold;
     color: rgb(39, 37, 37);
-    margin: 45px 55px;
-    margin-top: 20px;
+    display: flex;
+    justify-content: right;
+    margin-top: -125px;
+    margin-right: 65px;
+  }
+
+  .Weather .unit {
+    display: flex;
+    justify-content: right;
+    margin-top: -75px;
     margin-right: 15px;
   }
 
